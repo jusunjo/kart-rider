@@ -1,26 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
+import styled from "styled-components";
+import { Route, Routes } from "react-router-dom";
+import Main from "./page/Main";
+import DetailUser from "./page/DetailUser";
+
+const StyledApp = styled.div`
+    margin: 0 auto;
+    width: 768px;
+    min-height: 1500px;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: center;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+    @media (max-width: 1000px) {
+        width: 90vw;
+    }
+`;
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <StyledApp>
+            <Routes>
+                <Route path="/" element={<Main />} />
+                <Route path="/detailuser" element={<DetailUser />} />
+            </Routes>
+        </StyledApp>
+    );
 }
 
 export default App;
