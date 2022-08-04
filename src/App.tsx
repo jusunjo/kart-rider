@@ -10,7 +10,7 @@ const StyledApp = styled.div`
     margin: 0 auto;
     width: 768px;
     min-height: 1500px;
-    background-color: #f5f5f5;
+
     display: flex;
     justify-content: center;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;

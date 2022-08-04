@@ -1,7 +1,9 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { addInfo } from "../modules/userInfo";
 import DetailUser from "./DetailUser";
 
 const StyledMain = styled.div`
@@ -24,6 +26,8 @@ const InputAndButton = styled.div`
         margin-right: 10px;
         padding-left: 20px;
         font-size: 20px;
+        background-color: #f5f5f5;
+        border: 0.1px solid #eeeeee;
     }
 
     .BtnUserName {
@@ -44,9 +48,10 @@ const InputAndButton = styled.div`
 const API_KEY = process.env.REACT_APP_API_KEY;
 
 const Main = () => {
-    const [userName, setUserName] = useState<string>();
-
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const [userName, setUserName] = useState<string>();
 
     console.log(userName);
 
@@ -59,13 +64,14 @@ const Main = () => {
             });
 
             const DetailUserInfo = await axios
-                .get(`/users/${response.data.accessId}/matches?start_date=&end_date=&offset=0&limit=20&match_types=`, {
+                .get(`/users/${response.data.accessId}/matches?start_date=&end_date=&offset=0&limit=200&match_types=`, {
                     headers: {
                         Authorization: `${API_KEY}`,
                     },
                 })
                 .then((res) => res.data);
-            console.log(DetailUserInfo);
+            dispatch(addInfo(DetailUserInfo));
+            console.log("DetailUserInfo", DetailUserInfo);
             navigate("/detailuser");
         } else {
             alert("라이더명을 입력해주세요");
@@ -74,7 +80,6 @@ const Main = () => {
 
     return (
         <StyledMain>
-            <div></div>
             <InputAndButton>
                 <input onChange={(e) => setUserName(e.target.value)} placeholder="라이더 이름을 입력해주세요" className="InputUserName"></input>
                 <button onClick={MoveDetailUser} className="BtnUserName">
