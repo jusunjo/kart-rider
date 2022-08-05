@@ -3,18 +3,29 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import Footer from "../components/Footer";
 import { addInfo } from "../modules/userInfo";
 import DetailUser from "./DetailUser";
 
 const StyledMain = styled.div`
     width: 90vw;
+
+    .logoBox {
+        display: flex;
+        justify-content: center;
+
+        margin-top: 200px;
+
+        .logo {
+            width: 50%;
+        }
+    }
 `;
 
 const InputAndButton = styled.div`
-    margin-top: 300px;
+    margin-top: 50px;
     display: flex;
     justify-content: center;
-
     border-radius: 30px;
     border: none;
 
@@ -80,12 +91,16 @@ const Main = () => {
 
     return (
         <StyledMain>
+            <div className="logoBox">
+                <img className="logo" alt="logo" src={process.env.PUBLIC_URL + `/assets/logo1.png`} />
+            </div>
             <InputAndButton>
                 <input onChange={(e) => setUserName(e.target.value)} placeholder="라이더 이름을 입력해주세요" className="InputUserName"></input>
                 <button onClick={MoveDetailUser} className="BtnUserName">
                     검색
                 </button>
             </InputAndButton>
+            <Footer />
         </StyledMain>
     );
 };

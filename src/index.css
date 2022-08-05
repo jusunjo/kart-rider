@@ -7,6 +7,17 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
+html,
+body {
+    height: 100%;
+}
+
+#wrap {
+    min-height: 100%;
+    position: relative;
+    padding-bottom: 60px;
+}
+
 * {
     font-family: "Noto Sans KR", sans-serif;
 }

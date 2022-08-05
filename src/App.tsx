@@ -9,7 +9,7 @@ import DetailUser from "./page/DetailUser";
 const StyledApp = styled.div`
     margin: 0 auto;
     width: 768px;
-    min-height: 1500px;
+    min-height: 100vh;
 
     display: flex;
     justify-content: center;
