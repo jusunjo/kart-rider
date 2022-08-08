@@ -5,6 +5,7 @@ const userInfo = createSlice({
 
     initialState: {
         userInfo: "",
+        detailMatch: "",
     },
 
     reducers: {
@@ -14,9 +15,15 @@ const userInfo = createSlice({
                 userInfo: action.payload,
             };
         },
+        addDetailMatch: (state, action) => {
+            return {
+                ...state,
+                detailMatch: action.payload,
+            };
+        },
     },
 });
 
-export const { addInfo } = userInfo.actions;
+export const { addInfo, addDetailMatch } = userInfo.actions;
 
 export default userInfo.reducer;

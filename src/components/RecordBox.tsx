@@ -4,12 +4,14 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userType } from "../page/DetailUser";
 import { useEffect, useState } from "react";
 import { track } from "../metadata/track";
 import { kartList } from "../metadata/kart";
 import { stringify } from "querystring";
+import axios from "axios";
+import { addDetailMatch } from "../modules/userInfo";
 
 const StyledRecordBox = styled.div`
     border: 3px solid #f5f5f5;
@@ -92,26 +94,46 @@ const StyledRecordBox = styled.div`
             justify-content: center;
             align-items: center;
             margin-right: 2.5px;
-            /* border-right: 1px solid black */
+            padding: 0 10px;
+
+            .rank {
+                margin-bottom: 10px;
+            }
+
+            .nickname {
+                font-size: 14px;
+            }
+
+            .cartImg {
+                width: 50px;
+                margin-bottom: 10px;
+            }
         }
     }
 `;
 
 type Track = { name: string; id: string };
 
+const API_KEY = process.env.REACT_APP_API_KEY;
+
 const RecordBox = ({ it }: { it: userType }) => {
     const [lapTime, setLapTime] = useState<string>();
     const [trackName, setTrackName] = useState<Track>();
     const [kartName, setKartName] = useState<string>();
+    const [toggleFlag, setToggleFlag] = useState<boolean>(true);
+    const [rank, setRank] = useState<any[]>([]);
 
-    useEffect(() => {
-        let time: string = it.player.matchTime;
-
+    const calculLapTime = (time: string) => {
         let min: number = Number(time.substring(0, time.length - 3));
         let mil: number = Number(time.substring(time.length - 3, 3));
-
         let lapTime: string = `${Math.floor(min / 60)}:${("0" + (min % 60)).slice(-2)}:${mil}0`;
-        setLapTime(lapTime);
+
+        return lapTime;
+    };
+
+    useEffect(() => {
+        //lapTime 계산
+        setLapTime(calculLapTime(it.player.matchTime));
 
         const trackName = track.filter((data) => data.id === it.trackId)[0];
         const kartName = kartList.filter((data) => data.id === it.player.kart)[0];
@@ -120,12 +142,34 @@ const RecordBox = ({ it }: { it: userType }) => {
         setKartName(kartName && kartName.name);
     }, []);
 
-    console.log("it", it);
+    const handleClick = async () => {
+        setToggleFlag(!toggleFlag);
+
+        const detailMatch = toggleFlag
+            ? await axios
+                  .get(`matches/${it.matchId}`, {
+                      headers: {
+                          Authorization: `${API_KEY}`,
+                      },
+                  })
+                  .then((res) => res.data.teams || res.data.players)
+            : setRank([]);
+
+        detailMatch &&
+            detailMatch.forEach((it: any) => {
+                it.players.forEach((data: any) => {
+                    setRank((a: any) => [...a, data]);
+                });
+            });
+
+        // kartList.filter((data) => data.id === )
+        console.log(rank);
+    };
 
     return (
         <>
-            <StyledRecordBox>
-                <Accordion>
+            <StyledRecordBox onClick={handleClick}>
+                <Accordion style={{ width: "100%" }}>
                     <AccordionSummary
                         style={{ backgroundColor: Number(it.player.matchRank) < 4 ? "#e1f5fe" : Number(it.player.matchRank) === 5 ? "#eeeeee" : "#ffebee" }}
                         expandIcon={<ExpandMoreIcon />}
@@ -133,7 +177,7 @@ const RecordBox = ({ it }: { it: userType }) => {
                         id="panel1a-header"
                     >
                         <div className="map">
-                            <img alt="map" src={process.env.PUBLIC_URL + `/assets/track/${trackName && trackName.id}.png`} />
+                            <img alt="map" src={process.env.PUBLIC_URL + `/assets/track/${trackName ? trackName.id : "questionMark"}.png`} />
                         </div>
                         <div className="DetailInfo">
                             <div className="mapName">{trackName ? trackName.name : "알수없음"}</div>
@@ -153,54 +197,19 @@ const RecordBox = ({ it }: { it: userType }) => {
                     <AccordionDetails>
                         <Typography component="div">
                             <div className="detailRank">
-                                <div className="ranks">
-                                    <div className="rank">1위</div>
-                                    <div className="cartImg">카트이미지</div>
-                                    <div className="nickname">닉네임</div>
-                                    <div className="lapTime">01:23:11</div>
-                                </div>
-                                <div className="ranks">
-                                    <div className="rank">1위</div>
-                                    <div className="cartImg">카트이미지</div>
-                                    <div className="nickname">닉네임</div>
-                                    <div className="lapTime">01:23:11</div>
-                                </div>
-                                <div className="ranks">
-                                    <div className="rank">1위</div>
-                                    <div className="cartImg">카트이미지</div>
-                                    <div className="nickname">닉네임</div>
-                                    <div className="lapTime">01:23:11</div>
-                                </div>
-                                <div className="ranks">
-                                    <div className="rank">1위</div>
-                                    <div className="cartImg">카트이미지</div>
-                                    <div className="nickname">닉네임</div>
-                                    <div className="lapTime">01:23:11</div>
-                                </div>
-                                <div className="ranks">
-                                    <div className="rank">1위</div>
-                                    <div className="cartImg">카트이미지</div>
-                                    <div className="nickname">닉네임</div>
-                                    <div className="lapTime">01:23:11</div>
-                                </div>
-                                <div className="ranks">
-                                    <div className="rank">1위</div>
-                                    <div className="cartImg">카트이미지</div>
-                                    <div className="nickname">닉네임</div>
-                                    <div className="lapTime">01:23:11</div>
-                                </div>
-                                <div className="ranks">
-                                    <div className="rank">1위</div>
-                                    <div className="cartImg">카트이미지</div>
-                                    <div className="nickname">닉네임</div>
-                                    <div className="lapTime">01:23:11</div>
-                                </div>
-                                <div className="ranks">
-                                    <div className="rank">1위</div>
-                                    <div className="cartImg">카트이미지</div>
-                                    <div className="nickname">닉네임</div>
-                                    <div className="lapTime">01:23:11</div>
-                                </div>
+                                {rank &&
+                                    rank
+                                        .sort((a, b) => a.matchRank - b.matchRank)
+                                        .map((it: any, idx: number): any => {
+                                            return (
+                                                <div key={it.accountNo} className="ranks">
+                                                    <div className="rank">{idx + 1}위</div>
+                                                    <img src={`/assets/kart/${kartList.filter((data: any): any => data.id === it.kart)[0].id}.png`} alt="kartImg" className="cartImg" />
+                                                    <div className="nickname">{it.characterName}</div>
+                                                    <div className="lapTime">{it.matchTime ? calculLapTime(it.matchTime) : "retire"}</div>
+                                                </div>
+                                            );
+                                        })}
                             </div>
                         </Typography>
                     </AccordionDetails>

@@ -75,12 +75,17 @@ const Main = () => {
             });
 
             const DetailUserInfo = await axios
-                .get(`/users/${response.data.accessId}/matches?start_date=&end_date=&offset=0&limit=100&match_types=`, {
+                .get(`/users/${response.data.accessId}/matches?start_date=&end_date=&offset=0&limit=20&match_types=`, {
                     headers: {
                         Authorization: `${API_KEY}`,
                     },
                 })
                 .then((res) => res.data);
+
+            console.log(DetailUserInfo.matches[0]);
+
+            // const DetailMatchInfo = await axios.get()
+
             dispatch(addInfo(DetailUserInfo));
             console.log("DetailUserInfo", DetailUserInfo);
             navigate("/detailuser");

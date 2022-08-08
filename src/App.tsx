@@ -8,7 +8,7 @@ import DetailUser from "./page/DetailUser";
 
 const StyledApp = styled.div`
     margin: 0 auto;
-    width: 768px;
+    width: 868px;
     min-height: 100vh;
 
     display: flex;
