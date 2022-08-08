@@ -34,7 +34,7 @@ const Profile = styled.div`
     }
 `;
 
-interface userType {
+export interface userType {
     accountNo: string;
     channelName: string;
     character: string;
@@ -73,8 +73,6 @@ const DetailUser = (): JSX.Element => {
     const [mapList, setMapList] = useState<userType[]>([]);
     const [alignment, setAlignment] = useState<string>("all");
 
-    console.log(userInfo.matches);
-
     useEffect(() => {
         userInfo.matches.forEach((data: any) => {
             data.matches.forEach((it: any) => {
@@ -82,8 +80,6 @@ const DetailUser = (): JSX.Element => {
             });
         });
     }, []);
-
-    console.log(mapList);
 
     const ChangeTeamOption = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
         setAlignment(newAlignment);
@@ -109,7 +105,7 @@ const DetailUser = (): JSX.Element => {
                 </Profile>
                 {mapList.length > 0 ? (
                     mapList.map((it) => {
-                        return <RecordBox key={it.matchId} />;
+                        return <RecordBox it={it} key={it.matchId} />;
                     })
                 ) : (
                     <div>데이터가 없습니다</div>

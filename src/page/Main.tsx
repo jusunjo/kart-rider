@@ -75,7 +75,7 @@ const Main = () => {
             });
 
             const DetailUserInfo = await axios
-                .get(`/users/${response.data.accessId}/matches?start_date=&end_date=&offset=0&limit=200&match_types=`, {
+                .get(`/users/${response.data.accessId}/matches?start_date=&end_date=&offset=0&limit=100&match_types=`, {
                     headers: {
                         Authorization: `${API_KEY}`,
                     },
@@ -90,18 +90,20 @@ const Main = () => {
     };
 
     return (
-        <StyledMain>
-            <div className="logoBox">
-                <img className="logo" alt="logo" src={process.env.PUBLIC_URL + `/assets/logo1.png`} />
-            </div>
-            <InputAndButton>
-                <input onChange={(e) => setUserName(e.target.value)} placeholder="라이더 이름을 입력해주세요" className="InputUserName"></input>
-                <button onClick={MoveDetailUser} className="BtnUserName">
-                    검색
-                </button>
-            </InputAndButton>
-            <Footer />
-        </StyledMain>
+        <>
+            <StyledMain>
+                <div className="logoBox">
+                    <img className="logo" alt="logo" src={process.env.PUBLIC_URL + `/assets/logo1.png`} />
+                </div>
+                <InputAndButton>
+                    <input onChange={(e) => setUserName(e.target.value)} placeholder="라이더 이름을 입력해주세요" className="InputUserName"></input>
+                    <button onClick={MoveDetailUser} className="BtnUserName">
+                        검색
+                    </button>
+                </InputAndButton>
+                <Footer />
+            </StyledMain>
+        </>
     );
 };
 
