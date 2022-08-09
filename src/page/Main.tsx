@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../components/Footer";
-import { addInfo } from "../modules/userInfo";
+import { addInfo, user } from "../modules/userInfo";
 import DetailUser from "./DetailUser";
 
 const StyledMain = styled.div`
@@ -64,8 +64,6 @@ const Main = () => {
 
     const [userName, setUserName] = useState<string>();
 
-    console.log(userName);
-
     const MoveDetailUser = async () => {
         if (userName) {
             const response = await axios.get(`/users/nickname/${userName}/`, {
@@ -74,8 +72,10 @@ const Main = () => {
                 },
             });
 
+            dispatch(user(response.data));
+
             const DetailUserInfo = await axios
-                .get(`/users/${response.data.accessId}/matches?start_date=&end_date=&offset=0&limit=20&match_types=`, {
+                .get(`/users/${response.data.accessId}/matches?start_date=&end_date=&offset=10&limit=20&match_types=`, {
                     headers: {
                         Authorization: `${API_KEY}`,
                     },
@@ -83,8 +83,6 @@ const Main = () => {
                 .then((res) => res.data);
 
             console.log(DetailUserInfo.matches[0]);
-
-            // const DetailMatchInfo = await axios.get()
 
             dispatch(addInfo(DetailUserInfo));
             console.log("DetailUserInfo", DetailUserInfo);

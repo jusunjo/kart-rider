@@ -1,14 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { Action } from "history";
 
 const userInfo = createSlice({
     name: "userInfo",
 
     initialState: {
+        user: "",
         userInfo: "",
         detailMatch: "",
     },
 
     reducers: {
+        user: (state, action) => {
+            return {
+                ...state,
+                user: action.payload,
+            };
+        },
         addInfo: (state, action) => {
             return {
                 ...state,
@@ -24,6 +32,6 @@ const userInfo = createSlice({
     },
 });
 
-export const { addInfo, addDetailMatch } = userInfo.actions;
+export const { addInfo, addDetailMatch, user } = userInfo.actions;
 
 export default userInfo.reducer;

@@ -157,13 +157,17 @@ const RecordBox = ({ it }: { it: userType }) => {
 
         detailMatch &&
             detailMatch.forEach((it: any) => {
-                it.players.forEach((data: any) => {
-                    setRank((a: any) => [...a, data]);
-                });
+                if (it.teamId) {
+                    it.players.forEach((data: any) => {
+                        setRank((a: any) => [...a, data]);
+                    });
+                } else {
+                    setRank((a) => [...a, it]);
+                }
             });
 
-        // kartList.filter((data) => data.id === )
-        console.log(rank);
+        console.log("rank", rank);
+        console.log(detailMatch);
     };
 
     return (
@@ -204,7 +208,7 @@ const RecordBox = ({ it }: { it: userType }) => {
                                             return (
                                                 <div key={it.accountNo} className="ranks">
                                                     <div className="rank">{idx + 1}위</div>
-                                                    <img src={`/assets/kart/${kartList.filter((data: any): any => data.id === it.kart)[0].id}.png`} alt="kartImg" className="cartImg" />
+                                                    <img src={`/assets/kart/${kartList.filter((data: any): any => data.id === it.kart)[0].id || "ㅎㅇ"}.png`} alt="kartImg" className="cartImg" />
                                                     <div className="nickname">{it.characterName}</div>
                                                     <div className="lapTime">{it.matchTime ? calculLapTime(it.matchTime) : "retire"}</div>
                                                 </div>

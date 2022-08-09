@@ -1,4 +1,5 @@
 import { Tabs, ToggleButton, ToggleButtonGroup } from "@mui/material";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
@@ -34,6 +35,16 @@ const Profile = styled.div`
     }
 `;
 
+const ViewMore = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70px;
+    background-color: #eeeeee;
+    margin-bottom: 20px;
+    cursor: pointer;
+`;
+
 export interface userType {
     accountNo: string;
     channelName: string;
@@ -67,11 +78,14 @@ export interface userType {
     trackId: string;
 }
 
+const API_KEY = process.env.REACT_APP_API_KEY;
+
 const DetailUser = (): JSX.Element => {
     const userInfo = useSelector((it: any) => it.userInfo.userInfo);
 
     const [mapList, setMapList] = useState<userType[]>([]);
     const [alignment, setAlignment] = useState<string>("all");
+    const [filterList, setFilterList] = useState<any>([]);
 
     useEffect(() => {
         userInfo.matches.forEach((data: any) => {
@@ -81,9 +95,23 @@ const DetailUser = (): JSX.Element => {
         });
     }, []);
 
+    console.log(mapList);
+
+    useEffect(() => {
+        if (alignment === "all") {
+            setFilterList(mapList);
+        } else if (alignment === "team") {
+            console.log("team");
+        } else {
+            console.log("solo");
+        }
+    }, [alignment]);
+
     const ChangeTeamOption = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
         setAlignment(newAlignment);
     };
+
+    console.log(filterList);
 
     return (
         <>
