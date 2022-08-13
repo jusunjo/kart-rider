@@ -5,7 +5,8 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Footer from "../components/Footer";
 import RecordBox from "../components/RecordBox";
-
+import { getDoc, doc } from "firebase/firestore/lite";
+import { db } from "../firebase_config";
 const StyledDetailUser = styled.div`
     width: 85%;
 `;
@@ -95,7 +96,7 @@ const DetailUser = (): JSX.Element => {
         });
     }, []);
 
-    console.log(mapList);
+    console.log(db);
 
     useEffect(() => {
         if (alignment === "all") {

@@ -1,9 +1,12 @@
 import axios from "axios";
+import { collection, getDocs } from "firebase/firestore/lite";
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../components/Footer";
+import { db } from "../firebase_config";
+
 import { addInfo, user } from "../modules/userInfo";
 import DetailUser from "./DetailUser";
 
@@ -91,6 +94,13 @@ const Main = () => {
             alert("라이더명을 입력해주세요");
         }
     };
+    const userCollection = collection(db, "communication");
+
+    const getUser = async () => {
+        const data = await getDocs(userCollection);
+        console.log(data.docs);
+    };
+    getUser();
 
     return (
         <>
