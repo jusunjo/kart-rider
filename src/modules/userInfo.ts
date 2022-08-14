@@ -5,13 +5,23 @@ const userInfo = createSlice({
     name: "userInfo",
 
     initialState: {
+        searchWord : [],
         user: "",
         userInfo: "",
         detailMatch: "",
     },
 
     reducers: {
-        user: (state, action) => {
+        recordSearchWord : (state:any,action) => {
+
+            const nickNameList = [action.payload, ...state.searchWord]
+
+            return {
+                ...state,
+                searchWord : nickNameList.filter((element, index) => nickNameList.indexOf(element) === index).splice(0,5)
+            }
+        },
+         user: (state, action) => {
             return {
                 ...state,
                 user: action.payload,
@@ -32,6 +42,6 @@ const userInfo = createSlice({
     },
 });
 
-export const { addInfo, addDetailMatch, user } = userInfo.actions;
+export const { recordSearchWord ,addInfo, addDetailMatch, user } = userInfo.actions;
 
 export default userInfo.reducer;
