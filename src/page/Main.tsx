@@ -1,6 +1,7 @@
+import { async } from "@firebase/util";
 import axios from "axios";
 import { collection, getDocs } from "firebase/firestore/lite";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -51,6 +52,10 @@ const InputAndButton = styled.div`
             font-size: 20px;
             background-color: #f5f5f5;
             border: 0.1px solid #eeeeee;
+        }
+
+        .noneHistory {
+            display: none;
         }
 
         .recentHistory {
@@ -105,10 +110,21 @@ const Main = () => {
     const dispatch = useDispatch();
 
     const [userName, setUserName] = useState<string>();
+    const [isFocus, setIsFocus] = useState<boolean>(false);
+    const [searchWord, setSearchWord] = useState<string>();
+
+    const exRef = useRef()
+
     const recordWord = useSelector((it: any) => it.userInfo.searchWord);
 
-    const MoveDetailUser = async () => {
+    const clickOnFocus = () => {
+        setIsFocus(true)
+    }
 
+  
+    
+    const MoveDetailUser = async () => {
+        
         if (userName) {
             //닉네임 입력 후 api 호출
             const response = await axios.get(`/users/nickname/${userName}/`, {
@@ -116,31 +132,64 @@ const Main = () => {
                     Authorization: `${API_KEY}`,
                 },
             });
-
+            
             //유저정보 담기
             dispatch(user(response.data));
-
+            
             //상세매치내역 api 호출
             const DetailUserInfo = await axios
-                .get(`/users/${response.data.accessId}/matches?start_date=&end_date=&offset=10&limit=20&match_types=`, {
-                    headers: {
-                        Authorization: `${API_KEY}`,
-                    },
-                })
-                .then((res) => res.data);
-
+            .get(`/users/${response.data.accessId}/matches?start_date=&end_date=&offset=10&limit=20&match_types=`, {
+                headers: {
+                    Authorization: `${API_KEY}`,
+                },
+            })
+            .then((res) => res.data);
+            
             //상세매치내역 담기
             dispatch(addInfo(DetailUserInfo));
-         
+            
             navigate("/detailuser");
-
+            
             //최근검색어 담기
             dispatch(recordSearchWord(userName))
-
+            
         } else {
             alert("라이더명을 입력해주세요");
         }
     };
+    
+    //최근검색어에서 api 호출
+    const clickSearchWord = async(nickName:string) => {
+     
+        const response = await axios.get(`/users/nickname/${nickName}/`, {
+            headers: {
+                Authorization: `${API_KEY}`,
+            },
+        });
+        
+        console.log(response)
+        
+        
+        
+        dispatch(user(response.data));
+        
+        const DetailUserInfo = await axios
+        .get(`/users/${response.data.accessId}/matches?start_date=&end_date=&offset=10&limit=20&match_types=`, {
+            headers: {
+                Authorization: `${API_KEY}`,
+            },
+        })
+        .then((res) => res.data);
+        
+        // 상세매치내역 담기
+        dispatch(addInfo(DetailUserInfo));
+        
+        navigate("/detailuser");
+    }
+    
+    const clickOnBlur = () => {
+        // setIsFocus(false)
+    }
 
     
     // const userCollection = collection(db, "communication");
@@ -150,27 +199,26 @@ const Main = () => {
         // };
         // getUser();
         
-        const clickSearchWord = () => {
-            console.log('gd')
-        }
+
+     
     
     return (
         <>
-            <StyledMain>
+            <StyledMain onBlur={() =>setIsFocus(false)}>
                 <div className="logoBox">
                     <img className="logo" alt="logo" src={process.env.PUBLIC_URL + `/assets/logo1.png`} />
                 </div>
                 <InputAndButton>
                     <div className="leftBox">
-                    <input onChange={(e) => setUserName(e.target.value)} placeholder="라이더 이름을 입력해주세요" className="InputUserName"/>
+                    <input onFocus={() =>setIsFocus(true)} onChange={(e) => setUserName(e.target.value)} placeholder="라이더 이름을 입력해주세요" className="InputUserName"/>
                     { recordWord === [] 
                     ?   '' 
-                    :   <div className="recentHistory">
-                        {recordWord.map((it:any, idx:number) => {
-                          return  <div key={idx} className="history">
-                                <div className="searchWord" onClick={clickSearchWord}>{it}</div>
-                                <div className="close">x</div>
-                            </div>
+                    :   <div className={isFocus ? "recentHistory": 'noneHistory'}>
+                        {recordWord.map((it:any, idx:number):any => {
+                          return  <div  key={idx} className="history">
+                                    <div className="searchWord" onClick={() => clickSearchWord(it)}>{it}</div>
+                                    <div className="close">x</div>
+                                  </div>
                         })}
                         </div>
                     }
