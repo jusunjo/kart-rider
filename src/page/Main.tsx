@@ -1,24 +1,24 @@
 import { async } from "@firebase/util";
 import axios from "axios";
-import { collection, getDocs } from "firebase/firestore/lite";
+
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Footer from "../components/Footer";
-import { db } from "../firebase_config";
 
-import { addInfo, recordSearchWord, user } from "../modules/userInfo";
+
+import { addInfo, deleteSearchWord, recordSearchWord, user } from "../modules/userInfo";
 import DetailUser from "./DetailUser";
 
 const StyledMain = styled.div`
-    width: 90vw;
+    /* width: 90vw; */
 
     .logoBox {
         display: flex;
         justify-content: center;
 
-        margin-top: 200px;
+        margin-top: 230px;
 
         .logo {
             width: 50%;
@@ -78,6 +78,7 @@ const InputAndButton = styled.div`
 
                 .close {
                     margin-right :10px;
+                    cursor: pointer;
                 }
             }
         }
@@ -186,25 +187,22 @@ const Main = () => {
         
         navigate("/detailuser");
     }
-    
-    const clickOnBlur = () => {
-        // setIsFocus(false)
+
+    const removeSearchWord = (nickName:string) => {
+        console.log(nickName)
+        dispatch(deleteSearchWord(nickName))
     }
+    
 
     
-    // const userCollection = collection(db, "communication");
-    // const getUser = async () => {
-        //     const data = await getDocs(userCollection);
-        //     console.log(data.docs);
-        // };
-        // getUser();
+   
         
 
      
     
     return (
         <>
-            <StyledMain onBlur={() =>setIsFocus(false)}>
+            <StyledMain>
                 <div className="logoBox">
                     <img className="logo" alt="logo" src={process.env.PUBLIC_URL + `/assets/logo1.png`} />
                 </div>
@@ -217,7 +215,7 @@ const Main = () => {
                         {recordWord.map((it:any, idx:number):any => {
                           return  <div  key={idx} className="history">
                                     <div className="searchWord" onClick={() => clickSearchWord(it)}>{it}</div>
-                                    <div className="close">x</div>
+                                    <div className="close" onClick={()=> removeSearchWord(it)}>x</div>
                                   </div>
                         })}
                         </div>

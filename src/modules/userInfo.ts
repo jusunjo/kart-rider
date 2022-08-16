@@ -21,6 +21,12 @@ const userInfo = createSlice({
                 searchWord : nickNameList.filter((element, index) => nickNameList.indexOf(element) === index).splice(0,5)
             }
         },
+        deleteSearchWord : (state,action) => {
+            return {
+                ...state,
+                searchWord : state.searchWord.filter((it) => it !== action.payload)
+            }
+        },
          user: (state, action) => {
             return {
                 ...state,
@@ -42,6 +48,6 @@ const userInfo = createSlice({
     },
 });
 
-export const { recordSearchWord ,addInfo, addDetailMatch, user } = userInfo.actions;
+export const { recordSearchWord,deleteSearchWord ,addInfo, addDetailMatch, user } = userInfo.actions;
 
 export default userInfo.reducer;
