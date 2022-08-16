@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { talkBoxType } from "../page/TalkPlaza";
 import styled from "styled-components";
 import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
-
+import copy from "copy-to-clipboard";
 const StyledTalkBox = styled.div`
     border: 0.5px solid gray;
     padding: 15px 20px;
@@ -55,10 +55,14 @@ const StyledTalkBox = styled.div`
 const TalkBox = ({ doc }: { doc: talkBoxType }) => {
     const textInput = useRef<any>();
 
-    const copy = () => {
-        const el: any = textInput.current;
-        el.select();
-        document.execCommand("copy");
+    const handleCopyClipBoard = async (text: string) => {
+        try {
+            await navigator.clipboard.writeText(text);
+
+            alert("복사 성공!");
+        } catch (error) {
+            alert("복사 실패!");
+        }
     };
 
     return (
@@ -75,7 +79,7 @@ const TalkBox = ({ doc }: { doc: talkBoxType }) => {
                         {doc.id}
                     </div>
                     <div>
-                        <button onClick={copy} className="copy">
+                        <button onClick={() => handleCopyClipBoard(doc.id)} className="copy">
                             복사하기
                         </button>
                         <button>전적보기</button>

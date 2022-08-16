@@ -64,9 +64,11 @@ const TalkPlaza = () => {
 
             <div className="talkList">
                 {talkList &&
-                    talkList.map((doc: any) => {
-                        return <TalkBox key={doc.timestamp} doc={doc} />;
-                    })}
+                    talkList
+                        .sort((a: any, b: any) => b.timestamp - a.timestamp)
+                        .map((doc: any) => {
+                            return <TalkBox key={doc.timestamp} doc={doc} />;
+                        })}
             </div>
         </StyledTalkPlaza>
     );
