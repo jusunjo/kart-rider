@@ -17,7 +17,8 @@ const StyledCreateTalk = styled.div`
         box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
         margin-top: 200px;
         padding: 30px;
-        background-color: #64b5f6;
+        background-color: #eeeeee;
+        border: 0.5px solid #e0e0e0;
         border-radius: 10px;
 
         .micAndLicense {
@@ -46,7 +47,7 @@ const StyledCreateTalk = styled.div`
         height: 30px;
         border-radius: 10px;
         border: none;
-        background-color: #e3f2fd;
+        background-color: #fafafa;
         margin: 10px 0;
         padding-left: 10px;
     }
@@ -58,8 +59,8 @@ const StyledCreateTalk = styled.div`
     .btnGroup {
         display: flex;
         justify-content: space-between;
-
         button {
+            background-color: #64b5f6;
             margin-top: 20px;
             height: 50px;
             border-radius: 10px;
@@ -89,7 +90,8 @@ const CreateTalk = () => {
     //라이센스
     //원하는 게임 타입
     //마이크 가능
-    //
+
+    console.log(mic);
 
     return (
         <StyledCreateTalk>
@@ -103,7 +105,7 @@ const CreateTalk = () => {
                 <div className="micAndLicense">
                     <div className="micGroup">
                         <div className="text mic">마이크</div>
-                        <Switch defaultChecked />
+                        <Switch onChange={() => setMic(!mic)} defaultChecked />
                     </div>
                     <div className="licenseGroup"></div>
                 </div>

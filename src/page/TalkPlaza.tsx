@@ -3,6 +3,32 @@ import { collection, getDocs, addDoc } from "firebase/firestore/lite";
 import { db } from "../firebase_config";
 import { useNavigate } from "react-router-dom";
 import TalkBox from "../components/TalkBox";
+import styled from "styled-components";
+
+const StyledTalkPlaza = styled.div`
+    .plazaTitle {
+        margin-left: 30px;
+        h1 {
+            margin-top: 100px;
+            margin-bottom: 0px;
+        }
+    }
+
+    .createTalk {
+        /* margin-top: 100px; */
+        margin-left: 770px;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 10px;
+        /* text-align : */
+        background-color: #e0e0e0;
+    }
+
+    .talkList {
+        display: flex;
+        flex-wrap: wrap;
+    }
+`;
 
 export interface talkBoxType {
     id: string;
@@ -27,13 +53,22 @@ const TalkPlaza = () => {
     }, []);
 
     return (
-        <div>
-            {talkList &&
-                talkList.map((doc: any) => {
-                    return <TalkBox key={doc.timestamp} doc={doc} />;
-                })}
-            <button onClick={() => navigate("/createtalk")}>글쓰기</button>
-        </div>
+        <StyledTalkPlaza>
+            <div className="plazaTitle">
+                <h1>소통광장</h1>
+                <div>자유롭게 소통할 수 있는 공간입니다</div>
+            </div>
+            <button className="createTalk" onClick={() => navigate("/createtalk")}>
+                글쓰기
+            </button>
+
+            <div className="talkList">
+                {talkList &&
+                    talkList.map((doc: any) => {
+                        return <TalkBox key={doc.timestamp} doc={doc} />;
+                    })}
+            </div>
+        </StyledTalkPlaza>
     );
 };
 
