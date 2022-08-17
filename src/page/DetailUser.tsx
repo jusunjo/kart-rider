@@ -1,14 +1,14 @@
-import { Tabs, ToggleButton, ToggleButtonGroup } from "@mui/material";
-import axios from "axios";
+import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import Footer from "../components/Footer";
+
 import RecordBox from "../components/RecordBox";
-import { getDoc, doc } from "firebase/firestore/lite";
-import { db } from "../firebase_config";
+
 const StyledDetailUser = styled.div`
     width: 85%;
+    margin: 0 auto;
 `;
 
 const Profile = styled.div`
@@ -35,7 +35,6 @@ const Profile = styled.div`
         font-size: 35px;
     }
 `;
-
 
 export interface userType {
     accountNo: string;
@@ -77,7 +76,7 @@ const DetailUser = (): JSX.Element => {
 
     const record = useSelector((it: any) => it.userInfo.searchWord);
 
-    console.log(record)
+    console.log(record);
 
     const [mapList, setMapList] = useState<userType[]>([]);
     const [alignment, setAlignment] = useState<string>("all");
@@ -90,8 +89,6 @@ const DetailUser = (): JSX.Element => {
             });
         });
     }, []);
-
-
 
     useEffect(() => {
         if (alignment === "all") {
@@ -106,8 +103,6 @@ const DetailUser = (): JSX.Element => {
     const ChangeTeamOption = (event: React.MouseEvent<HTMLElement>, newAlignment: string) => {
         setAlignment(newAlignment);
     };
-
-
 
     return (
         <>

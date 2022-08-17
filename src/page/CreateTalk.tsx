@@ -75,21 +75,26 @@ const StyledCreateTalk = styled.div`
 const CreateTalk = () => {
     const navigate = useNavigate();
 
-    const [id, setId] = useState<string>();
+    const [id, setId] = useState<string>("");
     const [mic, setMic] = useState<boolean>(true);
-    const [title, setTitle] = useState<string>();
-    const [content, setContent] = useState<string>();
+    const [title, setTitle] = useState<string>("");
+    const [content, setContent] = useState<string>("");
 
     const userCollection = collection(db, "communication");
 
     const createTalk = async () => {
+        if (title.length <= 4 || title.length >= 15) {
+            return alert("제목을 5자 이상 15자 이하로 입력해주세요");
+        } else if (id.length <= 1 || id.length >= 10) {
+            return alert("아이디를 2자 이상 10자 이하로 입력해주세요");
+        } else if (content.length <= 4 || content.length >= 30) {
+            return alert("내용을 5자 이상 30자 이하로 입력해주세요");
+        }
+
         await addDoc(userCollection, { id: id, title: title, content: content, mic: mic, timestamp: +new Date() });
 
         navigate("/talkplaza");
     };
-    //라이센스
-    //원하는 게임 타입
-    //마이크 가능
 
     console.log(mic);
 

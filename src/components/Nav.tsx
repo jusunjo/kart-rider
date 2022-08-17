@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const StyledNav = styled.div`
@@ -30,41 +30,19 @@ const StyledNav = styled.div`
 `;
 
 const Nav = () => {
-    const [search, setSearch] = useState<boolean>(true);
-    const [talk, setTalk] = useState<boolean>(false);
-    const [personality, setPersonality] = useState<boolean>(false);
-
-    // let {a}= useParams();
-
-    // console.log({a})
-
-    const clickNav = (text: string) => {
-        if (text === "전적검색") {
-            setSearch(true);
-            setTalk(false);
-            setPersonality(false);
-        } else if (text === "소통광장") {
-            setSearch(false);
-            setTalk(true);
-            setPersonality(false);
-        } else if (text === "성격검사") {
-            setSearch(false);
-            setTalk(false);
-            setPersonality(true);
-        }
-    };
+    const location: { pathname: string } = useLocation();
 
     return (
         <StyledNav>
-            <Link onClick={() => clickNav("전적검색")} className={search ? "clickNav" : "nav"} to="/">
+            <Link className={location.pathname === "/" ? "clickNav" : "nav"} to="/">
                 전적검색
             </Link>
             <div>|</div>
-            <Link onClick={() => clickNav("소통광장")} className={talk ? "clickNav" : "nav"} to="/talkplaza">
+            <Link className={location.pathname === "/talkplaza" ? "clickNav" : "nav"} to="/talkplaza">
                 소통광장
             </Link>
             <div>|</div>
-            <Link onClick={() => clickNav("성격검사")} className={personality ? "clickNav" : "nav"} to="/personalitytest">
+            <Link className={location.pathname === "/personalitytest" ? "clickNav" : "nav"} to="/personalitytest">
                 성격검사
             </Link>
         </StyledNav>
