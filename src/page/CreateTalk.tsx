@@ -88,7 +88,7 @@ const CreateTalk = () => {
         } else if (id.length <= 1 || id.length >= 10) {
             return alert("아이디를 2자 이상 10자 이하로 입력해주세요");
         } else if (content.length <= 4 || content.length >= 30) {
-            return alert("내용을 5자 이상 30자 이하로 입력해주세요");
+            // return alert("내용을 5자 이상 30자 이하로 입력해주세요");
         }
 
         await addDoc(userCollection, { id: id, title: title, content: content, mic: mic, timestamp: +new Date() });

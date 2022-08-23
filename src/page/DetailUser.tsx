@@ -3,8 +3,9 @@ import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-
+import DoNotDisturbAltIcon from "@mui/icons-material/DoNotDisturbAlt";
 import RecordBox from "../components/RecordBox";
+import { width } from "@mui/system";
 
 const StyledDetailUser = styled.div`
     width: 85%;
@@ -34,6 +35,16 @@ const Profile = styled.div`
         font-weight: 900;
         font-size: 35px;
     }
+`;
+
+const NotData = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 300px;
+    font-size: 25px;
+    font-weight: 700;
 `;
 
 export interface userType {
@@ -117,8 +128,10 @@ const DetailUser = (): JSX.Element => {
                         <div className="nickname">{userInfo.nickName}</div>
                         <ToggleButtonGroup style={{ height: "30px" }} color="primary" value={alignment} exclusive onChange={ChangeTeamOption}>
                             <ToggleButton value="all">전체</ToggleButton>
-                            <ToggleButton value="team">팀전</ToggleButton>
-                            <ToggleButton value="solo">개인전</ToggleButton>
+                            <ToggleButton value="speedTeam">스피드팀전</ToggleButton>
+                            <ToggleButton value="speedSolo">스피드개인전</ToggleButton>
+                            <ToggleButton value="itemTeam">아이템팀전</ToggleButton>
+                            <ToggleButton value="itemSolo">아이템개인전</ToggleButton>
                         </ToggleButtonGroup>
                     </div>
                 </Profile>
@@ -127,7 +140,10 @@ const DetailUser = (): JSX.Element => {
                         return <RecordBox it={it} key={it.matchId} />;
                     })
                 ) : (
-                    <div>데이터가 없습니다</div>
+                    <NotData>
+                        <DoNotDisturbAltIcon style={{ color: "red", width: "80px", height: "80px" }} />
+                        <div>데이터가 없습니다</div>
+                    </NotData>
                 )}
             </StyledDetailUser>
         </>

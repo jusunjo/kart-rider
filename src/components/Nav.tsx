@@ -32,18 +32,19 @@ const StyledNav = styled.div`
 const Nav = () => {
     const location: { pathname: string } = useLocation();
 
+    console.log(location.pathname);
     return (
         <StyledNav>
-            <Link className={location.pathname === "/" ? "clickNav" : "nav"} to="/">
+            <Link className={location.pathname === "/" ? "clickNav" : location.pathname === "/detailuser" ? "clickNav" : "nav"} to="/">
                 전적검색
             </Link>
             <div>|</div>
-            <Link className={location.pathname === "/talkplaza" ? "clickNav" : "nav"} to="/talkplaza">
+            <Link className={location.pathname === "/talkplaza" ? "clickNav" : location.pathname === "/createtalk" ? "clickNav" : "nav"} to="/talkplaza">
                 소통광장
             </Link>
             <div>|</div>
             <Link className={location.pathname === "/personalitytest" ? "clickNav" : "nav"} to="/personalitytest">
-                성격검사
+                길드전
             </Link>
         </StyledNav>
     );
